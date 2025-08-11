@@ -23,7 +23,7 @@ class CardController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'title' => 'required|string|max:191',
             'description' => 'nullable|string',
@@ -32,7 +32,7 @@ class CardController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        Card::create($request->all());
+        Card::create($validated);
 
         return redirect()->route('admin.cards.index')->with('success', 'Cartão criado com sucesso!');
     }
@@ -45,7 +45,7 @@ class CardController extends Controller
 
     public function update(Request $request, Card $card)
     {
-        $request->validate([
+        $validated = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'title' => 'required|string|max:191',
             'description' => 'nullable|string',
@@ -54,7 +54,7 @@ class CardController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $card->update($request->all());
+        $card->update($validated);
 
         return redirect()->route('admin.cards.index')->with('success', 'Cartão atualizado com sucesso!');
     }
