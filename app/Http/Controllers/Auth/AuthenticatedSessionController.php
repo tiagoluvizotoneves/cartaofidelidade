@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -16,27 +17,12 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $request->validate([
-            'email'    => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+        $request->authenticate();
+        $request->session()->regenerate();
 
-        $credentials = [
-            'email'    => $request->email,
-            'password' => $request->password,
-        ];
-
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
-        throw ValidationException::withMessages([
-            'email' => __('As credenciais fornecidas estão incorretas.'),
-        ]);
+        return redirect()->intended(route('admin.dashboard'));
     }
 
     public function destroy(Request $request)

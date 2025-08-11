@@ -25,14 +25,14 @@ class StampController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'card_id' => 'required|exists:cards,id',
             'stamped_at' => 'nullable|date',
             'used' => 'boolean',
         ]);
 
-        Stamp::create($request->all());
+        Stamp::create($validated);
 
         return redirect()->route('admin.stamps.index')->with('success', 'Carimbo criado com sucesso.');
     }
@@ -46,14 +46,14 @@ class StampController extends Controller
 
     public function update(Request $request, Stamp $stamp)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'card_id' => 'required|exists:cards,id',
             'stamped_at' => 'nullable|date',
             'used' => 'boolean',
         ]);
 
-        $stamp->update($request->all());
+        $stamp->update($validated);
 
         return redirect()->route('admin.stamps.index')->with('success', 'Carimbo atualizado com sucesso.');
     }
