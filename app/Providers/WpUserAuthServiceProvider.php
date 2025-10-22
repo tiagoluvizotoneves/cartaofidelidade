@@ -10,8 +10,9 @@ class WpUserAuthServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Auth::provider('wpusers', function ($app, array $config) {
-            return new WpUserProvider($app['hash'], $config['model']);
-        });
+        // Temporariamente comentado para permitir instalação
+        // $this->app['auth']->provider('wpusers', function ($app, array $config) {
+        //     return new WpUserProvider($app['hash'], $config['model']);
+        // });
     }
 }
